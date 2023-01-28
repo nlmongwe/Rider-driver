@@ -24,6 +24,8 @@ class _LoginState extends State<Login> {
     return Scaffold(
       appBar: AppBar(centerTitle: true, title: const Text('Login')),
       body: ModalProgressHUD(
+        blur: 1,
+        color: Colors.orange,
         inAsyncCall: progress,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
