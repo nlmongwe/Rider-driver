@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">656434189523-bfuk0hufo1vf7748h2p77233k4t7rjj7.apps.googleusercontent.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">656434189523</string>
+    <string name="google_api_key" translatable="false">AIzaSyDp81EVrsWFsF3ZmH83AFUtfrCn0GnAxGo</string>
+    <string name="google_app_id" translatable="false">1:656434189523:android:db5ecf6d388faf74057026</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyDp81EVrsWFsF3ZmH83AFUtfrCn0GnAxGo</string>
+    <string name="google_storage_bucket" translatable="false">riderdriver-28123.appspot.com</string>
+    <string name="project_id" translatable="false">riderdriver-28123</string>
+</resources>

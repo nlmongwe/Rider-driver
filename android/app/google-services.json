@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "656434189523",
+    "project_id": "riderdriver-28123",
+    "storage_bucket": "riderdriver-28123.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:656434189523:android:db5ecf6d388faf74057026",
+        "android_client_info": {
+          "package_name": "com.example.rider_driver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "656434189523-bfuk0hufo1vf7748h2p77233k4t7rjj7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDp81EVrsWFsF3ZmH83AFUtfrCn0GnAxGo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "656434189523-bfuk0hufo1vf7748h2p77233k4t7rjj7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "656434189523-q7o05aac66ad92qskb9n0d4bltqdgivl.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.riderDriver"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
