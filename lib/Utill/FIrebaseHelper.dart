@@ -15,6 +15,11 @@ class FirebaseHelper {
         email: email, password: password);
   }
 
+  Future<void> loginWithEmailAndPassword(String email, String password) async {
+    await _firebaseAuth.signInWithEmailAndPassword(
+        email: email, password: password);
+  }
+
   Future<void> uploadUserImage(String email, File profileFile) async {
     final profilesRef = _fireStoreRef.child('ProfileImages/$email');
     try {
@@ -66,10 +71,5 @@ class FirebaseHelper {
       print(e);
     }
     return null;
-  }
-
-  Future<void> loginWithEmailAndPassword(String email, String password) async {
-    await _firebaseAuth.signInWithEmailAndPassword(
-        email: email, password: password);
   }
 }

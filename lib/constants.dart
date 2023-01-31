@@ -95,7 +95,12 @@ class _KImageContainerState extends State<KImageContainer> {
 }
 
 class KUploadButton extends StatefulWidget {
-  const KUploadButton({Key? key, required this.onTap, required this.verticalPadding, required this.horizontalPadding}) : super(key: key);
+  const KUploadButton(
+      {Key? key,
+      required this.onTap,
+      required this.verticalPadding,
+      required this.horizontalPadding})
+      : super(key: key);
   final void Function() onTap;
   final double horizontalPadding;
   final double verticalPadding;
@@ -107,7 +112,9 @@ class _KUploadButtonState extends State<KUploadButton> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: widget.horizontalPadding, vertical: widget.verticalPadding),
+      padding: EdgeInsets.symmetric(
+          horizontal: widget.horizontalPadding,
+          vertical: widget.verticalPadding),
       child: GestureDetector(
         onTap: widget.onTap,
         child: Column(
@@ -120,7 +127,12 @@ class _KUploadButtonState extends State<KUploadButton> {
 }
 
 class KCaptureButton extends StatefulWidget {
-  const KCaptureButton({Key? key, required this.onTap, required this.horizontalPadding, required this.verticalPadding}) : super(key: key);
+  const KCaptureButton(
+      {Key? key,
+      required this.onTap,
+      required this.horizontalPadding,
+      required this.verticalPadding})
+      : super(key: key);
   final void Function() onTap;
   final double horizontalPadding;
   final double verticalPadding;
@@ -132,7 +144,9 @@ class _KCaptureButtonState extends State<KCaptureButton> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: widget.horizontalPadding, vertical: widget.verticalPadding),
+      padding: EdgeInsets.symmetric(
+          horizontal: widget.horizontalPadding,
+          vertical: widget.verticalPadding),
       child: GestureDetector(
         onTap: widget.onTap,
         child: Column(
@@ -140,6 +154,25 @@ class _KCaptureButtonState extends State<KCaptureButton> {
           children: const [Text("Capture"), Icon(Icons.camera_alt_rounded)],
         ),
       ),
+    );
+  }
+}
+
+class KFooterNavButtons extends StatefulWidget {
+  const KFooterNavButtons({Key? key, required this.title, required this.onTap})
+      : super(key: key);
+  final void Function() onTap;
+  final String title;
+  @override
+  State<KFooterNavButtons> createState() => _KFooterNavButtonsState();
+}
+
+class _KFooterNavButtonsState extends State<KFooterNavButtons> {
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: widget.onTap,
+      child: Text(widget.title.toString()),
     );
   }
 }
