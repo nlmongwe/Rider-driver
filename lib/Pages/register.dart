@@ -6,9 +6,11 @@ import 'package:image_picker/image_picker.dart';
 import 'package:rider_driver/Pages/home.dart';
 import 'package:rider_driver/Pages/login.dart';
 import 'package:rider_driver/Utill/FirebaseExceptions.dart';
-import 'package:rider_driver/constants.dart';
-import 'package:rider_driver/Client/appUser.dart';
+import 'package:rider_driver/Utill/constants.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:email_validator/email_validator.dart';
+
+import '../Model/appUser.dart';
 
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
@@ -93,15 +95,20 @@ class _RegisterState extends State<Register> {
   }
 
   void makeRegister() async {
+    //handling the registration here allows for detecting register exceptions
+    // as buttons are clicked
     if (readyToRegister()) {
       _appUser = AppUser(_nameController!, _emailController!, _profileFile!);
       modalHandler(true);
       try {
         await _appUser.register(_passwordController!);
         await _appUser.uploadUserData();
+        // **TO DO**
+        // handle collection.put and collection.get errors from database.saveUser
         modalHandler(false);
         navigateToHomeScreen();
       } on FirebaseAuthException catch (error) {
+        // To Do here
         modalHandler(false);
         FireExceptionHelper fireExceptionHelper = FireExceptionHelper();
         String? status = fireExceptionHelper
@@ -156,7 +163,7 @@ class _RegisterState extends State<Register> {
     if (_nameController == null || _nameController!.length < 3) {
       showMessage('provide name of at least three characters');
       return false;
-    } else if (_emailController == null || !(_emailController!.contains("@"))) {
+    } else if (!EmailValidator.validate(_emailController!)) {
       showMessage('provide valid email address');
       return false;
     } else if (_passwordController == null || _passwordController!.length < 8) {
@@ -173,9 +180,9 @@ class _RegisterState extends State<Register> {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(
         message,
-        style: const TextStyle(color: Colors.black),
+        style: TextStyle(color: Theme.of(context).scaffoldBackgroundColor),
       ),
-      backgroundColor: Colors.orange,
+      backgroundColor: Theme.of(context).primaryColor,
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(7), topRight: Radius.circular(7))),

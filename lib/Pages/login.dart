@@ -1,15 +1,17 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:rider_driver/AppAuth/userAuth.dart';
 import 'package:rider_driver/Pages/home.dart';
 import 'package:rider_driver/Pages/register.dart';
-import 'package:rider_driver/Utill/FIrebaseHelper.dart';
+import 'package:rider_driver/Pages/resetPassword.dart';
 import 'package:rider_driver/Utill/FirebaseExceptions.dart';
-import 'package:rider_driver/constants.dart';
+import 'package:rider_driver/Utill/constants.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
   static const loginPageRoute = 'login';
+
   @override
   State<Login> createState() => _LoginState();
 }
@@ -17,23 +19,29 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   String? _emailController;
   String? _passwordController;
-  FirebaseHelper firebaseHelper = FirebaseHelper();
+  final UserAuthentication _userAuthentication = UserAuthentication();
   bool progress = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(centerTitle: true, title: const Text('Login')),
       body: ModalProgressHUD(
-        blur: 1,
+        // blur: 1,
         color: Colors.orange,
         inAsyncCall: progress,
+        // progressIndicator: const CircularProgressIndicator(
+        //   backgroundColor: Colors.white,
+        // ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             KEmailField(onEdit: saveEmail),
             KPasswordField(onEdit: savePassword),
-            const TextButton(onPressed: null, child: Text('forgot password?')),
+            TextButton(
+              onPressed: navigateToResetPasswordPage,
+              child: const Text('forgot password?'),
+            ),
             TextButton(
                 onPressed: navigateToRegisterPage,
                 child: const Text("don't have and account?"))
@@ -61,6 +69,10 @@ class _LoginState extends State<Login> {
     Navigator.of(context).pushNamed(Register.registerPageRoute);
   }
 
+  void navigateToResetPasswordPage() {
+    Navigator.of(context).pushNamed(ResetPassword.resetPasswordPageRoute);
+  }
+
   void navigatorHandler(String errorCode) {
     if (errorCode == "user-not-found" || errorCode == "user-disabled") {
       Navigator.of(context).pushNamed(Register.registerPageRoute);
@@ -70,7 +82,7 @@ class _LoginState extends State<Login> {
   void makeLogin() async {
     modalState(true);
     try {
-      await firebaseHelper.loginWithEmailAndPassword(
+      await _userAuthentication.loginWithEmailAndPassword(
           _emailController!, _passwordController!);
       modalState(false);
       navigateToHomePage();
@@ -81,7 +93,6 @@ class _LoginState extends State<Login> {
           fireExceptionHelper.loginWithEmailAndPasswordException(error.code);
       showMessage(status!);
       navigatorHandler(error.code);
-      print(error.code);
     }
   }
 

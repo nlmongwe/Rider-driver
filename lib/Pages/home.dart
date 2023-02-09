@@ -1,6 +1,11 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:rider_driver/Utill/FIrebaseHelper.dart';
+import 'package:rider_driver/AppAuth/userAuth.dart';
+import 'package:rider_driver/Database/appDatabase.dart';
+import 'package:rider_driver/Pages/drivers.dart';
+import 'package:rider_driver/Pages/login.dart';
+import 'package:rider_driver/Pages/riders.dart';
+import 'package:rider_driver/Pages/userPage.dart';
+import 'package:rider_driver/Utill/constants.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -10,62 +15,77 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final FirebaseHelper firebaseHelper = FirebaseHelper();
-  final _firebaseAuth = FirebaseAuth.instance;
-  late User loggedInPerson;
-  @override
-  void initState() {
-    super.initState();
-    getCurrentUser();
-  }
+  int _pageIndex = 1;
+  final _pageController = PageController(initialPage: 1);
+  // final UserAuthentication _userAuthentication = UserAuthentication();
+  // late String? loggedInPersonEmail;
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   // _getUserData();
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
         centerTitle: true,
         title: const Text("Rider Driver"),
+        actions: [
+          TextButton(
+              onPressed: _signOut,
+              child: const Text(
+                'Logout',
+                style: TextStyle(color: Colors.black87),
+              ))
+        ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            FutureBuilder(
-                future:
-                    firebaseHelper.getUserData(loggedInPerson.email.toString()),
-                builder: (context, userData) {
-                  if (userData.hasData) {
-                    return Column(children: [
-                      Text(userData.data!['name']),
-                      CircleAvatar(
-                        backgroundImage:
-                            NetworkImage(userData.data!['imageUrl']),
-                      ),
-                    ]);
-                  }
-                  return const CircularProgressIndicator(
-                    color: Colors.orange,
-                  );
-                }),
-          ],
-        ),
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: _selectPage,
+        children: const [
+          Riders(),
+          UserPage(),
+          Drivers(),
+        ],
       ),
-      // floatingActionButton: IconButton(
-      //     onPressed: () async {
-      //       print('getting data');
-      //       var data = await firebaseHelper
-      //           .getUserData(loggedInPerson.email.toString());
-      //       print(data!.data());
-      //     },
-      //     icon: const Icon(Icons.add)),
+      persistentFooterButtons: [
+        // TextButton(onPressed: _signOut, child: const Text('Logout'))
+        GestureDetector(onTap: _signOut, child: const Text('Logout')),
+        const SizedBox(width: 3)
+      ],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _pageIndex,
+        onTap: _selectPage,
+        items: const [
+          BottomNavigationBarItem(
+              icon: Icon(Icons.directions_walk), label: 'Riders'),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.car_crash), label: 'Drivers')
+        ],
+      ),
     );
   }
 
-  void getCurrentUser() {
-    User? user = _firebaseAuth.currentUser;
-    if (user != null) {
-      loggedInPerson = user;
-      print("logged in person: ${user.email}");
-    }
+  void _selectPage(int pageIndex) {
+    _pageController.jumpToPage(pageIndex);
+    setState(() {
+      _pageIndex = pageIndex;
+    });
   }
+
+  void _navigateToLoginPage() {
+    Navigator.of(context).pushNamed(Login.loginPageRoute);
+  }
+
+  Future<void> _signOut() async {
+    await UserAuthentication.signOut();
+    _navigateToLoginPage();
+  }
+
+  // void _getUserData() async {
+  //   loggedInPersonEmail = _userAuthentication.getCurrentUser();
+  // }
 }
